@@ -13,4 +13,5 @@ int main(){
     area = length * width;
     printf("The area of the rectangle is %f\n", area);
 
+    return 0;
 }
