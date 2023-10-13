@@ -13,3 +13,9 @@
 - /n   new line
 
 - alt shift f, auto format
+
+- for( i=1; i<5; i++)     for(starting value of i, how many times to run, increment)
+
+- int a[10];    define an array
+
+- while(str[length] != \0)      search for end of the string
