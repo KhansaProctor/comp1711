@@ -1,0 +1,6 @@
+- if (mark >= 10){}
+- else if(mark >= 70){}
+- if (mark >=40 && mark <= 70){}    AND
+- if (mark >= 40 || mark <= 70){}   OR
+
+- need to use break; when using a switch
