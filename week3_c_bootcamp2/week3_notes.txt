@@ -4,3 +4,11 @@
 - if (mark >= 40 || mark <= 70){}   OR
 
 - need to use break; when using a switch
+
+- float sum(){}     new function return type, return a float
+
+- void functions    return multiple variables or return no variables
+
+- void tokeniseRecord(const char *input, const char *delimiter,
+                    char *date, char *time, char *steps)            by using pointers, can change output without return
+                                                                    like changing what pointer points too
