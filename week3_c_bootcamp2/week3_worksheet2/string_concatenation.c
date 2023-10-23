@@ -11,7 +11,7 @@ int str_length(char* str){
 
 }
 
-char concatStrings(char string_one, char string_two){
+char concatStrings(char* string_one, char* string_two){
     int element = (str_length(string_one));
     int length2 = (str_length(string_two));
     int counter = 0;

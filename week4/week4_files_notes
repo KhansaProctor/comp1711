@@ -1,0 +1,5 @@
+- fopen then fclose     immediately
+- look at creat_file.c
+- atoi      string to integer, need #include <stdlib.h>
+- use utils.h   header file
+    #include "utils.h"
