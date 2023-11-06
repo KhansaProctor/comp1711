@@ -4,8 +4,8 @@
 
 // Define an appropriate struct
 typedef struct {
-	char *date;
-	char *time;
+	char date[50];
+	char time[50];
 	int steps;
 } FITNESS_DATA;
 
@@ -64,17 +64,13 @@ int main() {
     while(fgets(line_buffer, buffer_size, file) != NULL){
         main_array[line_counter] = line_buffer;
         tokeniseRecord(main_array[line_counter], ",", date, time, steps);
-        formatted_array[line_counter].date = date;
-        formatted_array[line_counter].time = time;
+        strncpy(formatted_array[line_counter].date, date, sizeof(formatted_array[line_counter].date));
+        strncpy(formatted_array[line_counter].time, time, sizeof(formatted_array[line_counter].time));
         formatted_array[line_counter].steps = atoi(steps);
-        printf("%s\n",formatted_array[line_counter].date);
-        printf("%s\n",formatted_array[line_counter].time);
-        printf("%d\n",formatted_array[line_counter].steps);
-        printf("%s", main_array[line_counter]);
         line_counter++;
     }
 
-    printf("Number of records in file %d\n", line_counter);
+    printf("Number of records in file: %d\n", line_counter);
     for(counter =0; counter <3; counter++){
         printf("%s/%s/%d\n",(formatted_array[counter]).date,(formatted_array[counter]).time, (formatted_array[counter]).steps);
         
