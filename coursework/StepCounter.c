@@ -52,28 +52,28 @@ int main() {
     char line_buffer[buffer_size];
     char *main_array[1000]; 
     int line_counter = 0;
-    char date[50];
-    char time[50];
     char steps[50];
     int counter = 0;
     FITNESS_DATA formatted_array[1000];
     
     
     while(1){
-        printf("Menu options: \n");
-        printf("A: Specify the file name to be imported\n");
-        printf("B: Display the total number of records in the file\n");
-        printf("C: Find the date and time of the timeslot with the fewest steps\n");
-        printf("D: Find the data and time of the timeslot with the largest number of steps\n");
-        printf("E: Find the mean step count of all the records in the file\n");
-        printf("F: Find the longest continuous period where the step count is above 500 steps\n");
-        printf("Q: Exit\n");
-        printf("Enter choice: ");
+       printf("A: View all your blood iron levels\n");                       // BRONZE
+        printf("B: View your average blood iron level\n");                    // BRONZE
+        printf("C: View your lowest blood iron level\n");                     // SILVER
+        printf("D: View your highest blood iron level\n");                    // SILVER
+        printf("E: View the blood iron levels for a specific month\n");       // SILVER/GOLD
+        printf("F: See some additional statistics about your iron levels\n"); // GOLD - see readme.md
+        printf("G: Generate a graph of your iron levels\n");                  // GOLD/PLATINUM - see readme.md
+        printf("Q: Exit the program\n");
 
+        // get the next character typed in and store in the 'choice'
         choice = getchar();
-        printf("1 %s",&choice);
+
+        // this gets rid of the newline character which the user will enter
+        // as otherwise this will stay in the stdin and be read next time
         while (getchar() != '\n');
-        printf("%s",&choice);
+        
         switch(choice){
             case 'A':
             case 'a':
@@ -90,9 +90,7 @@ int main() {
 
                 while(fgets(line_buffer, buffer_size, file) != NULL){
                     main_array[line_counter] = line_buffer;
-                    tokeniseRecord(main_array[line_counter], ",", date, time, steps);
-                    strncpy(formatted_array[line_counter].date, date, sizeof(formatted_array[line_counter].date));
-                    strncpy(formatted_array[line_counter].time, time, sizeof(formatted_array[line_counter].time));
+                    tokeniseRecord(main_array[line_counter], ",", formatted_array[line_counter].date, formatted_array[line_counter].time, steps);
                     formatted_array[line_counter].steps = atoi(steps);
                     line_counter++;
                 }
