@@ -68,6 +68,7 @@ int main() {
         strncpy(formatted_array[line_counter].time, time, sizeof(formatted_array[line_counter].time));
         formatted_array[line_counter].steps = atoi(steps);
         line_counter++;
+        
     }
 
     printf("Number of records in file: %d\n", line_counter);

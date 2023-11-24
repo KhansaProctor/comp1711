@@ -8,6 +8,23 @@
 // Define any additional variables here
 // Global variables for filename and FITNESS_DATA array
 int filename_chosen = 0;
+int fewest_steps_index = 0;
+int largest_steps_index = 0;
+
+int chose_exit = 0;
+char choice;
+
+char filename[10];
+int buffer_size = 1000;
+
+char *main_array[1000]; 
+int line_counter = 0;
+
+char date[50];
+char time[50];
+char steps[50];
+int counter = 0;
+FITNESS_DATA formatted_array[1000];
 
 
 // This is your helper function. Do not change it in any way.
@@ -43,67 +60,72 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 // Complete the main function
 int main() {
-    int chose_exit = 0;
-    char choice;
-    char filename[10];
     
-
-    int buffer_size = 1000;
     char line_buffer[buffer_size];
-    char *main_array[1000]; 
-    int line_counter = 0;
-    char steps[50];
-    int counter = 0;
-    FITNESS_DATA formatted_array[1000];
     
-    
-    while(1){
-       printf("A: View all your blood iron levels\n");                       // BRONZE
-        printf("B: View your average blood iron level\n");                    // BRONZE
-        printf("C: View your lowest blood iron level\n");                     // SILVER
-        printf("D: View your highest blood iron level\n");                    // SILVER
-        printf("E: View the blood iron levels for a specific month\n");       // SILVER/GOLD
-        printf("F: See some additional statistics about your iron levels\n"); // GOLD - see readme.md
-        printf("G: Generate a graph of your iron levels\n");                  // GOLD/PLATINUM - see readme.md
+    while(1)
+    {
+        printf("Menu options: \n");
+        printf("A: Specify the filename to be imported\n");                       // BRONZE
+        printf("B: Display the total number of records in the file\n");                    // BRONZE
+        printf("C: Find the date and time of the timeslot with the fewest steps\n");                     // SILVER
+        printf("D: Find the data and time of the timeslot with the largest number of steps\n");                    // SILVER
+        printf("E: Find the mean step count of all the records in the file\n");       // SILVER/GOLD
+        printf("F: Find the longest continuous period where the step count is above 500 steps\n"); // GOLD - see readme.md               // GOLD/PLATINUM - see readme.md
         printf("Q: Exit the program\n");
+        printf("Enter choice: ");
 
-        // get the next character typed in and store in the 'choice'
-        choice = getchar();
-
-        // this gets rid of the newline character which the user will enter
-        // as otherwise this will stay in the stdin and be read next time
-        while (getchar() != '\n');
+        scanf("%s",&choice);
         
-        switch(choice){
-            case 'A':
-            case 'a':
-                printf("Input filename: ");
-                scanf("%s", filename);
-                FILE *file = fopen(filename, "r");
-                if(file == NULL){
-                    printf("Error opening file\n");
-                    return 1;
-                }
-                else{
-                    printf("File successfully loaded\n");
-                }
+        switch(choice)
+        {
+        case 'A':
+        case 'a':
+            printf("Input filename: ");
+            scanf("%s",filename);
+            FILE *file = fopen(filename, "r");
+            if(file == NULL){
+                printf("Error opening file\n");
+                return 1;
+            }
 
-                while(fgets(line_buffer, buffer_size, file) != NULL){
-                    main_array[line_counter] = line_buffer;
-                    tokeniseRecord(main_array[line_counter], ",", formatted_array[line_counter].date, formatted_array[line_counter].time, steps);
-                    formatted_array[line_counter].steps = atoi(steps);
-                    line_counter++;
+            while(fgets(line_buffer, buffer_size, file) != NULL){
+                main_array[line_counter] = line_buffer;
+                tokeniseRecord(main_array[line_counter], ",", date, time, steps);
+                strncpy(formatted_array[line_counter].date, date, sizeof(formatted_array[line_counter].date));
+                strncpy(formatted_array[line_counter].time, time, sizeof(formatted_array[line_counter].time));
+                formatted_array[line_counter].steps = atoi(steps);
+                line_counter++;
+            
+                if (line_counter != 0){
+                    if (formatted_array[line_counter].steps < formatted_array[line_counter-1].steps){
+                        fewest_steps_index = line_counter-1;
+                    }
+                    else if (formatted_array[line_counter].steps > formatted_array[line_counter-1].steps){
+                        printf("%d",largest_steps_index);
+                        largest_steps_index = line_counter-1;
+                    }
                 }
-                fclose(file);
-                break;
-            case 'B':
-            case 'b':
-                printf("Total records: %d\n", line_counter);
-                
-                
-                
-                
-                break;
+            }
+
+            printf("File successfully loaded\n");
+
+            break;
+        case 'B':
+        case 'b':
+            printf("Total records: %d\n", line_counter);
+    
+            break;
+
+        case 'C':
+        case 'c':
+            printf("Fewest steps: %s %s\n", formatted_array[fewest_steps_index].date, formatted_array[fewest_steps_index].time);
+            break;
+
+        case 'D':
+        case 'd':
+            printf("Largest steps: %s %s\n", formatted_array[largest_steps_index].date, formatted_array[largest_steps_index].time);
+            break;
         }
     }
 }
