@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "FitnessDataStruct.h"
 
 // Struct moved to header file
@@ -10,6 +11,14 @@
 int filename_chosen = 0;
 int fewest_steps_index = 0;
 int largest_steps_index = 0;
+int total_steps = 0;
+int mean = 0;
+int temp_longest_period_start_index = 0;
+int longest_period_start_index = 0;
+int temp_longest_period_end_index = 0;
+int longest_period_end_index = 0;
+int temp_longest_period_counter = -1;
+int longest_period_counter = 0;
 
 int chose_exit = 0;
 char choice;
@@ -63,7 +72,7 @@ int main() {
     
     char line_buffer[buffer_size];
     
-    while(1)
+    while(chose_exit == 0)
     {
         printf("Menu options: \n");
         printf("A: Specify the filename to be imported\n");                       // BRONZE
@@ -95,17 +104,46 @@ int main() {
                 strncpy(formatted_array[line_counter].date, date, sizeof(formatted_array[line_counter].date));
                 strncpy(formatted_array[line_counter].time, time, sizeof(formatted_array[line_counter].time));
                 formatted_array[line_counter].steps = atoi(steps);
-                line_counter++;
+                total_steps += formatted_array[line_counter].steps;
+                printf()
+                
             
                 if (line_counter != 0){
-                    if (formatted_array[line_counter].steps < formatted_array[line_counter-1].steps){
-                        fewest_steps_index = line_counter-1;
+                    if (formatted_array[line_counter].steps < formatted_array[fewest_steps_index].steps){
+                        fewest_steps_index = line_counter;
                     }
-                    else if (formatted_array[line_counter].steps > formatted_array[line_counter-1].steps){
-                        printf("%d",largest_steps_index);
-                        largest_steps_index = line_counter-1;
+                    if (formatted_array[line_counter].steps > formatted_array[largest_steps_index].steps){
+                        largest_steps_index = line_counter;
                     }
                 }
+
+                
+                if ((formatted_array[line_counter].steps >= 500) && (temp_longest_period_start_index == 0)){
+                    temp_longest_period_start_index = line_counter;
+                }
+                if (temp_longest_period_start_index != 0){
+                    temp_longest_period_counter++;
+                    if (formatted_array[line_counter].steps <= 500){
+                        temp_longest_period_end_index = line_counter-1;
+                    }
+                    
+                }
+                
+                if (temp_longest_period_end_index != 0){
+                    if (temp_longest_period_counter > longest_period_counter){
+                        longest_period_start_index = temp_longest_period_start_index;
+                        longest_period_end_index = temp_longest_period_end_index;
+                        longest_period_counter = (temp_longest_period_counter);
+                    }
+                    
+                    temp_longest_period_start_index = 0;
+                    temp_longest_period_end_index = 0;
+                    temp_longest_period_counter = -1;
+                    
+
+                }
+                
+                line_counter++;
             }
 
             printf("File successfully loaded\n");
@@ -126,8 +164,28 @@ int main() {
         case 'd':
             printf("Largest steps: %s %s\n", formatted_array[largest_steps_index].date, formatted_array[largest_steps_index].time);
             break;
+
+        case 'E':
+        case 'e':
+            
+            mean = round(total_steps/line_counter);
+            printf("Mean step count: %d\n", mean);
+            break;
+        
+        case 'F':
+        case 'f':
+            printf("Longest period start: %s %s\n", formatted_array[longest_period_start_index].date, formatted_array[longest_period_start_index].time);
+            printf("Longest period end: %s %s\n", formatted_array[longest_period_end_index].date, formatted_array[longest_period_end_index].time);
+            break;
+
+        case 'Q':
+        case 'q':
+            chose_exit = 1;
         }
+
+
     }
+    return 0;
 }
 
 
