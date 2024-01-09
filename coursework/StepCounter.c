@@ -72,6 +72,7 @@ int main() {
     
     char line_buffer[buffer_size];
     
+    // Menu section
     while(chose_exit == 0)
     {
         printf("Menu options: \n");
@@ -97,7 +98,7 @@ int main() {
                 printf("Error opening file\n");
                 return 1;
             }
-
+            // storing the file
             while(fgets(line_buffer, buffer_size, file) != NULL){
                 main_array[line_counter] = line_buffer;
                 tokeniseRecord(main_array[line_counter], ",", date, time, steps);
@@ -105,9 +106,9 @@ int main() {
                 strncpy(formatted_array[line_counter].time, time, sizeof(formatted_array[line_counter].time));
                 formatted_array[line_counter].steps = atoi(steps);
                 total_steps += formatted_array[line_counter].steps;
-                printf()
+                printf("%d: %d\n", line_counter, total_steps);
                 
-            
+                //finding the fewest and largest steps
                 if (line_counter != 0){
                     if (formatted_array[line_counter].steps < formatted_array[fewest_steps_index].steps){
                         fewest_steps_index = line_counter;
@@ -117,7 +118,7 @@ int main() {
                     }
                 }
 
-                
+                //finding the longest period
                 if ((formatted_array[line_counter].steps >= 500) && (temp_longest_period_start_index == 0)){
                     temp_longest_period_start_index = line_counter;
                 }
@@ -147,6 +148,7 @@ int main() {
             }
 
             printf("File successfully loaded\n");
+            
 
             break;
         case 'B':
@@ -167,8 +169,8 @@ int main() {
 
         case 'E':
         case 'e':
-            
-            mean = round(total_steps/line_counter);
+            // calculating the mean
+            mean = round((float) total_steps/(float)line_counter);
             printf("Mean step count: %d\n", mean);
             break;
         
